@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: eclient
+              uri: lb://ECLIENT
+              predicates:
+                - Path=/eclient/**
