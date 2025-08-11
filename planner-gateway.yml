@@ -4,7 +4,7 @@ spring:
       server:
         webflux:
           routes:
-            - id: eclient
-              uri: lb://ECLIENT
+            - id: planner-todo
+              uri: lb://PLANNER-TODO
               predicates:
-                - Path=/eclient/**
+                - Path=/planner-todo/**
