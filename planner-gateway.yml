@@ -8,3 +8,7 @@ spring:
               uri: lb://PLANNER-TODO
               predicates:
                 - Path=/planner-todo/**
+            - id: planner-users
+              uri: lb://PLANNER-USERS
+              predicates:
+                - Path=/planner-users/**
