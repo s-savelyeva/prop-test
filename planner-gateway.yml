@@ -8,7 +8,11 @@ spring:
               uri: lb://PLANNER-TODO
               predicates:
                 - Path=/planner-todo/**
+              filters:
+                - StripPrefix=1
             - id: planner-users
               uri: lb://PLANNER-USERS
               predicates:
                 - Path=/planner-users/**
+              filters:
+                - StripPrefix=1
