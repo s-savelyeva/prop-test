@@ -4,35 +4,36 @@ server:
 spring:
   application:
     name: planner-gateway
-  
+
   main:
     web-application-type: reactive  # ✅ Для Spring Cloud Gateway
-  
+
   cloud:
     config:
       enabled: false  # ✅ Отключить Config Client если не используете
-    
+
     gateway:
-      discovery:
-        locator:
-          enabled: false  # ✅ Отключить авто-обнаружение для явного управления
-      
-      routes:
-        # ✅ Правильный синтаксис для planner-users
-        - id: planner-users
-          uri: lb://PLANNER-USERS
-          predicates:
-            - Path=/planner-users/**
-          filters:
-            - StripPrefix=1  # ✅ ОБЯЗАТЕЛЬНО добавить фильтр!
-        
-        # ✅ Правильный синтаксис для planner-todo
-        - id: planner-todo
-          uri: lb://PLANNER-TODO
-          predicates:
-            - Path=/planner-todo/**
-          filters:
-            - StripPrefix=1
+      server:
+        webflux:
+          routes:
+            # ✅ Правильный синтаксис для planner-users
+                    - id: planner-users
+                      uri: lb://PLANNER-USERS
+                      predicates:
+                        - Path=/planner-users/**
+                      filters:
+                        - StripPrefix=1  # ✅ ОБЯЗАТЕЛЬНО добавить фильтр!
+            
+                    # ✅ Правильный синтаксис для planner-todo
+                    - id: planner-todo
+                      uri: lb://PLANNER-TODO
+                      predicates:
+                        - Path=/planner-todo/**
+                      filters:
+                        - StripPrefix=1
+          discovery:
+            locator:
+              enabled: false
 
 # Eureka конфигурация
 eureka:
