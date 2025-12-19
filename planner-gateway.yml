@@ -1,14 +1,43 @@
+server:
+  port: 8765  # ✅ Порт Gateway
+
 spring:
+  application:
+    name: planner-gateway
+  
+  main:
+    web-application-type: reactive  # ✅ Для Spring Cloud Gateway
+  
   cloud:
+    config:
+      enabled: false  # ✅ Отключить Config Client если не используете
+    
     gateway:
-      server:
-        webflux:
-          routes:
-            - id: planner-todo
-              uri: lb://PLANNER-TODO
-              predicates:
-                - Path=/planner-todo/**
-            - id: planner-users
-              uri: lb://PLANNER-USERS
-              predicates:
-                - Path=/planner-users/**
+      discovery:
+        locator:
+          enabled: false  # ✅ Отключить авто-обнаружение для явного управления
+      
+      routes:
+        # ✅ Правильный синтаксис для planner-users
+        - id: planner-users
+          uri: lb://PLANNER-USERS
+          predicates:
+            - Path=/planner-users/**
+          filters:
+            - StripPrefix=1  # ✅ ОБЯЗАТЕЛЬНО добавить фильтр!
+        
+        # ✅ Правильный синтаксис для planner-todo
+        - id: planner-todo
+          uri: lb://PLANNER-TODO
+          predicates:
+            - Path=/planner-todo/**
+          filters:
+            - StripPrefix=1
+
+# Eureka конфигурация
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
